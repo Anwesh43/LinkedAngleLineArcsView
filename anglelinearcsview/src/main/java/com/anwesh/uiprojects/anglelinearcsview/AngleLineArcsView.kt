@@ -206,4 +206,26 @@ class AngleLineArcsView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : AngleLineArcsView) {
+
+        private val animator : Animator = Animator(view)
+        private val ala : AngleLineArc = AngleLineArc(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            ala.draw(canvas, paint)
+            animator.animate {
+                ala.update {i, scl ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            ala.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
