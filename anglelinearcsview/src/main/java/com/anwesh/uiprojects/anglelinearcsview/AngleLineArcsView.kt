@@ -66,10 +66,28 @@ fun Canvas.draALANode(i : Int, scale : Float, paint : Paint) {
     val sc2 : Float = scale.divideScale(1, 2)
     paint.strokeWidth = Math.min(w, h) / strokeFactor
     paint.strokeCap = Paint.Cap.ROUND
-    paint.color = foreColor 
+    paint.color = foreColor
     save()
     translate(w / 2, gap * (i + 1))
     drawAngleLines(sc1, size, paint)
     drawAngleArcs(sc2, size, paint)
     restore()
+}
+
+class AngleLineArcsView(ctx : Context) : View(ctx) {
+
+    private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+    override fun onDraw(canvas : Canvas) {
+
+    }
+
+    override fun onTouchEvent(event : MotionEvent) : Boolean {
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+
+            }
+        }
+        return true
+    }
 }
