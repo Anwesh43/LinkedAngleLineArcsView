@@ -57,7 +57,7 @@ fun Canvas.drawAngleArcs(sc : Float, r : Float, paint : Paint) {
     }
 }
 
-fun Canvas.draALANode(i : Int, scale : Float, paint : Paint) {
+fun Canvas.drawALANode(i : Int, scale : Float, paint : Paint) {
     val w : Float = width.toFloat()
     val h : Float = height.toFloat()
     val gap : Float = h / (nodes + 1)
@@ -136,6 +136,50 @@ class AngleLineArcsView(ctx : Context) : View(ctx) {
             if (animated) {
                 animated = false
             }
+        }
+    }
+
+    data class ALANode(var i : Int, val state : State = State()) {
+
+        private var prev : ALANode? = null
+        private var next : ALANode? = null
+
+        init {
+            addNeighbor()
+        }
+
+        fun addNeighbor() {
+            if (i < nodes - 1) {
+                next = ALANode(i + 1)
+                next?.prev = this
+            }
+        }
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            canvas.drawALANode(i, state.scale, paint)
+            next?.draw(canvas, paint)
+        }
+
+        fun update(cb : (Int, Float) -> Unit) {
+            state.update {
+                cb(i, it)
+            }
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            state.startUpdating(cb)
+        }
+
+        fun getNext(dir : Int, cb : () -> Unit) : ALANode {
+            var curr : ALANode? = prev
+            if (dir == 1) {
+                curr = next
+            }
+            if (curr != null) {
+                return curr
+            }
+            cb()
+            return this 
         }
     }
 }
