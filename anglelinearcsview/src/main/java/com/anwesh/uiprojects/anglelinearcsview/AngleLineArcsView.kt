@@ -229,4 +229,13 @@ class AngleLineArcsView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : AngleLineArcsView {
+            val view : AngleLineArcsView = AngleLineArcsView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
